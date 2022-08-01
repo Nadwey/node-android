@@ -1,0 +1,40 @@
+name: Build
+on:
+    push:
+permissions:
+    contents: write
+jobs:
+    build:
+        concurrency: ci-${{ github.ref }}
+
+        strategy:
+            fail-fast: false
+            matrix:
+                node: ["18.7.0"]
+                arch: ["arm64"]
+                sdk: ["26"]
+
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+
+            - name: Install dependencies
+              run: |
+                  sudo apt-get install python3 g++ make python3-pip
+
+            - name: "Install android ndk"
+              uses: nttld/setup-ndk@v1
+              id: setup-ndk
+              with:
+                  ndk-version: r25e
+                  add-to-path: false
+
+            - name: "Clone node"
+              run: |
+                curl -RLO https://nodejs.org/dist/v${{ matrix.node }}/node-v${{ matrix.node }}.tar.xz
+                tar xvJf node-v${{ matrix.node }}.tar.xz
+                cd node-v${{ matrix.node }}
+
+            - name: "Configure"
+              run: ./android-configure ${{ steps.setup-ndk.outputs.ndk-path }} ${{ matrix.arch }} ${{ matrix.sdk }}
