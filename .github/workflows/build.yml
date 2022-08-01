@@ -36,10 +36,11 @@ jobs:
                   tar xJf node-v${{ matrix.node }}.tar.xz
 
             - name: "Configure"
+              working-directory: ./node-v${{ matrix.node }}
               run: |
-                  cd node-v${{ matrix.node }}
                   ./android-configure ${{ steps.setup-ndk.outputs.ndk-path }} ${{ matrix.arch }} ${{ matrix.sdk }}
 
             - name: "Build"
+              working-directory: ./node-v${{ matrix.node }}
               run: |
                   make -j4
