@@ -32,9 +32,10 @@ jobs:
 
             - name: "Clone node"
               run: |
-                curl -RLO https://nodejs.org/dist/v${{ matrix.node }}/node-v${{ matrix.node }}.tar.xz
-                tar xvJf node-v${{ matrix.node }}.tar.xz
-                cd node-v${{ matrix.node }}
+                  curl -RLO https://nodejs.org/dist/v${{ matrix.node }}/node-v${{ matrix.node }}.tar.xz
+                  tar xJf node-v${{ matrix.node }}.tar.xz
 
             - name: "Configure"
-              run: ./android-configure ${{ steps.setup-ndk.outputs.ndk-path }} ${{ matrix.arch }} ${{ matrix.sdk }}
+              run: |
+                  cd node-v${{ matrix.node }}
+                  ./android-configure ${{ steps.setup-ndk.outputs.ndk-path }} ${{ matrix.arch }} ${{ matrix.sdk }}
