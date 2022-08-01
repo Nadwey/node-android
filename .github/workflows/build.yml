@@ -10,7 +10,7 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                node: ["18.7.0"]
+                node: ["18.7.0", "16.16.0"]
                 arch: ["arm64"]
                 sdk: ["26"]
 
@@ -36,14 +36,17 @@ jobs:
                   tar xJf node-v${{ matrix.node }}.tar.xz
 
             - name: "Configure"
-              working-directory: ./node-v${{ matrix.node }}
               run: |
+                  cp ./android-configure ./node-v${{ matrix.node }}/android-configure
                   ./android-configure ${{ steps.setup-ndk.outputs.ndk-path }} ${{ matrix.arch }} ${{ matrix.sdk }}
-
-                  sed -i 's|/poll.o \\|/poll.o \\\n\t$(obj).target/$(TARGET)/deps/uv/src/unix/epoll.o \\|' out/deps/uv/libuv.target.mk
-                  sed -i "s|// Setup for shared library export.|#undef V8_TRAP_HANDLER_VIA_SIMULATOR\n#undef V8_TRAP_HANDLER_SUPPORTED\n#define V8_TRAP_HANDLER_SUPPORTED false\n\n// Setup for shared library export.|" deps/v8/src/trap-handler/trap-handler.h
 
             - name: "Build"
               working-directory: ./node-v${{ matrix.node }}
               run: |
                   make -j4
+
+            - name: "Upload build"
+              uses: actions/upload-artifact@v3
+              with:
+                  name: libnode
+                  path: ./node-v${{ matrix.node }}/out/Release/libnode.so
