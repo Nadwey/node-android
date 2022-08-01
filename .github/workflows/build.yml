@@ -10,8 +10,8 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                node: ["16.16.0"]
-                arch: ["arm"]
+                node: ["16.16.0", "18.7.0"]
+                arch: ["arm64"]
                 sdk: ["26"]
 
         runs-on: ubuntu-latest
@@ -21,8 +21,7 @@ jobs:
 
             - name: Install dependencies
               run: |
-                  sudo dpkg --add-architecture i386
-                  sudo apt-get install build-essential python3 g++ make python3-pip gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf
+                  sudo apt-get install python3 g++ make python3-pip
 
             - name: "Install android ndk"
               uses: nttld/setup-ndk@v1
