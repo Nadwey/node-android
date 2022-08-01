@@ -10,8 +10,8 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                node: ["18.7.0", "16.16.0"]
-                arch: ["arm64", "arm"]
+                node: ["16.16.0"]
+                arch: ["arm"]
                 sdk: ["26"]
 
         runs-on: ubuntu-latest
@@ -21,6 +21,7 @@ jobs:
 
             - name: Install dependencies
               run: |
+                  sudo dpkg --add-architecture i386
                   sudo apt-get install python3 g++ make python3-pip
 
             - name: "Install android ndk"
