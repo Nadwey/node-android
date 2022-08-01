@@ -27,7 +27,7 @@ jobs:
               uses: nttld/setup-ndk@v1
               id: setup-ndk
               with:
-                  ndk-version: r25e
+                  ndk-version: r25
                   add-to-path: false
 
             - name: "Clone node"
