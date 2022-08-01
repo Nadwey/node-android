@@ -5,8 +5,6 @@ permissions:
     contents: write
 jobs:
     build:
-        concurrency: ci-${{ github.ref }}
-
         strategy:
             fail-fast: false
             matrix:
