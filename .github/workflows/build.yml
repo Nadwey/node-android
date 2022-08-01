@@ -38,6 +38,7 @@ jobs:
             - name: "Configure"
               run: |
                   cp ./android-configure ./node-v${{ matrix.node }}/android-configure
+                  chmod +x ./android-configure
                   ./android-configure ${{ steps.setup-ndk.outputs.ndk-path }} ${{ matrix.arch }} ${{ matrix.sdk }}
 
             - name: "Build"
