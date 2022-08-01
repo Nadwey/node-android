@@ -39,3 +39,7 @@ jobs:
               run: |
                   cd node-v${{ matrix.node }}
                   ./android-configure ${{ steps.setup-ndk.outputs.ndk-path }} ${{ matrix.arch }} ${{ matrix.sdk }}
+
+            - name: "Build"
+              run: |
+                  make -j4
