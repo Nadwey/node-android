@@ -22,7 +22,7 @@ jobs:
             - name: Install dependencies
               run: |
                   sudo dpkg --add-architecture i386
-                  sudo apt-get install python3 g++ make python3-pip
+                  sudo apt-get install python3 g++ make python3-pip gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf
 
             - name: "Install android ndk"
               uses: nttld/setup-ndk@v1
