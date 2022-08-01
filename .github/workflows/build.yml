@@ -11,7 +11,7 @@ jobs:
             fail-fast: false
             matrix:
                 node: ["18.7.0", "16.16.0"]
-                arch: ["arm64"]
+                arch: ["arm64", "arm"]
                 sdk: ["26"]
 
         runs-on: ubuntu-latest
@@ -50,5 +50,5 @@ jobs:
             - name: "Upload build"
               uses: actions/upload-artifact@v3
               with:
-                  name: libnode
+                  name: libnode-node-v${{ matrix.node }}-${{ matrix.arch }}-sdk-${{ matrix.sdk }}
                   path: ./node-v${{ matrix.node }}/out/Release/libnode.so
