@@ -8,9 +8,9 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                node: ["16.16.0", "18.7.0"]
-                arch: ["arm64"]
-                sdk: [21, 22, 23, 24, 26, 27, 28, 29, 30, 31, 32]
+                node: ["16.16.0"] # ["16.16.0", "18.7.0"]
+                arch: ["arm64", "x86_64"]
+                sdk: [27] # [21, 22, 23, 24, 26, 27, 28, 29, 30, 31, 32, 33]
 
         runs-on: ubuntu-latest
         steps:
@@ -19,7 +19,7 @@ jobs:
 
             - name: Install dependencies
               run: |
-                  sudo apt-get install python3 g++ make python3-pip
+                  sudo apt-get install python3 gcc g++ make python3-pip gcc-multilib g++-multilib
 
             - name: "Install android ndk"
               uses: nttld/setup-ndk@v1
@@ -45,8 +45,12 @@ jobs:
               run: |
                   make -j4
 
+            - name: "Rename build output"
+              run: |
+                  mv ./node-v${{ matrix.node }}/out/Release/libnode.so ./node-v${{ matrix.node }}/out/Release/libnode-v${{ matrix.node }}-${{ matrix.arch }}-sdk-${{ matrix.sdk }}.so
+
             - name: "Upload build"
               uses: actions/upload-artifact@v3
               with:
-                  name: libnode-node-v${{ matrix.node }}-${{ matrix.arch }}-sdk-${{ matrix.sdk }}
-                  path: ./node-v${{ matrix.node }}/out/Release/libnode.so
+                  name: libnode-v${{ matrix.node }}-${{ matrix.arch }}-sdk-${{ matrix.sdk }}
+                  path: ./node-v${{ matrix.node }}/out/Release/libnode-v${{ matrix.node }}-${{ matrix.arch }}-sdk-${{ matrix.sdk }}.so
