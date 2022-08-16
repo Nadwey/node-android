@@ -1,4 +1,4 @@
-name: Build
+name: Build node v18.x
 on:
     push:
 permissions:
